@@ -1,0 +1,7 @@
+{
+	"workbookName": "WorkbookName.xlsx",
+	"email": "YOUR_EMAIL",
+	"password": "YOUR_PASSWORD",
+	"attributes": ["title", "shoeSize"],
+	"marketAttributes": ["lowestAsk"]
+}
