@@ -3,5 +3,6 @@
 	"email": "YOUR_EMAIL",
 	"password": "YOUR_PASSWORD",
 	"attributes": ["title", "shoeSize"],
-	"marketAttributes": ["lowestAsk"]
+	"marketAttributes": ["lowestAsk"],
+	"width": 50
 }

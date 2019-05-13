@@ -5,6 +5,39 @@ import openpyxl
 import re
 import os
 import string
+import math
+
+def load_from_json(file):
+    try:
+        with open(file, 'r') as myfile:
+            return json.load(myfile)
+    except IOError:
+        with open(file, 'w') as myfile:
+            json.dump({}, myfile)
+        return {}
+
+config = load_from_json('config.json')
+workbook_name = config['workbookName']
+email = config['email']
+password = config['password']
+attributes = config['attributes']
+market_attributes = config['marketAttributes']
+width = config['width']
+
+def center(text, spacer=' ', length=width, clear=False, display=True):
+    if clear:
+        os.system('cls' if os.name == 'nt' else 'clear')
+    count = int(math.ceil((length - len(text)) / 2))
+    if count > 0:
+        if display:
+            print(spacer * count + text + spacer * count)
+        else:
+            return (spacer * count + text + spacer * count)
+    else:
+        if display:
+            print(text)
+        else:
+            return text
 
 class Stockx():
     API_BASE = 'https://stockx.com/api'
@@ -56,19 +89,6 @@ class Stockx():
 
 stockx = Stockx()
 
-def settings(config):
-	try:
-		with open(config, 'r') as myfile:
-			return json.load(myfile)
-	except IOError:
-		with open(config, 'w') as myfile:
-			json.dump({}, myfile)
-		return {}
-
-def header(title):
-	os.system('cls' if os.name == 'nt' else 'clear')
-	print('\n{}\n{}\n'.format(title, '-' * len(title)))
-
 def json_to_title(json):
 	return re.sub(r'(\w)([A-Z])', r'\1 \2', json).title().replace('Shoe Size', 'Size')
 
@@ -103,21 +123,12 @@ def write_workbook(email, password, attributes, market_attributes, workbook_name
 				i += 1
 	wb.save(workbook_name)
 
-header('StockX to Excel by @DefNotAvg')
-
-print('Loading config.json...\r', end='')
-config = settings('config.json')
-email = config['email']
-password = config['password']
-attributes = config['attributes']
-market_attributes = config['marketAttributes']
-workbook_name = config['workbookName']
-print('Successfully loaded config.json!!')
-
-print('Setting up the Excel Workbook...\r', end='')
+center(' ', clear=True)
+center('StockX to Excel by @DefNotAvg')
+center('-', '-')
+print('{}\r'.format(center('Setting up the Excel Workbook...', display=False)), end='')
 setup_workbook(attributes, market_attributes, workbook_name)
-print('Successfully set up the Excel Workbook!!')
-
-print('Writing StockX data to {}...\r'.format(workbook_name), end='')
+center('Successfully set up the Excel Workbook!!')
+print('{}\r'.format(center('Writing StockX data to {}...'.format(workbook_name), display=False)), end='')
 write_workbook(email, password, attributes, market_attributes, workbook_name)
-print('Successfully exported StockX data to {}!!'.format(workbook_name))
+center('Successfully exported StockX data to {}!!'.format(workbook_name))
